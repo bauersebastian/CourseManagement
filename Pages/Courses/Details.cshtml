@@ -1,0 +1,48 @@
+﻿@page
+@model CourseManagement.Pages.Courses.DetailsModel
+
+@{
+    ViewData["Title"] = "Details zu Kurs";
+}
+
+<h1>Details zum Kurs @Html.DisplayFor(model => model.Course.Title)</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.Term)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.Term)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.StartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.StartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Course.EndDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Course.EndDate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Course.ID">Bearbeiten</a> |
+    <a asp-page="./Index">Zurück zur Übersicht</a>
+</div>

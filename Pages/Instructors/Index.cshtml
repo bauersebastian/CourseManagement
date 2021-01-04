@@ -1,0 +1,144 @@
+﻿@page "{id:int?}"
+@model CourseManagement.Pages.Instructors.IndexModel
+@using System.Linq
+@{
+    ViewData["Title"] = "Dozenten";
+}
+
+<h1>Dozenten</h1>
+
+<p>
+    <a asp-page="Create">Neuen Dozenten anlegen</a>
+</p>
+
+@if (!Model.InstructorData.Instructors.Any())
+{
+    <p>Es wurden bisher keine Dozenten angelegt.</p>
+}
+else
+{
+    <form asp-page="./Index" asp-route-id="" method="get">
+
+        <div class="form-actions no-color">
+            <p>
+                Suche nach Namen:
+                <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                <input type="submit" value="Suche" class="btn btn-primary" /> |
+                <a asp-page="./Index" asp-route-id="">Zurück zur kompletten Liste</a>
+            </p>
+        </div>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Instructors[0].Degree)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Instructors[0].FirstName)
+                </th>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+                        @Html.DisplayNameFor(model => model.Instructors[0].LastName)
+                    </a>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var instructor in Model.InstructorData.Instructors)
+            {
+
+                string activeRow = "";
+                if (instructor.ID == Model.InstructorID)
+                {
+                    activeRow = "table-info";
+                }
+
+                <tr class="@activeRow">
+                    <td>
+                        @Html.DisplayFor(modelItem => instructor.Degree)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => instructor.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => instructor.LastName)
+                    </td>
+                    <td>
+                        <a asp-page="./Index" asp-route-searchString="@Model.CurrentFilter" asp-route-id="@instructor.ID">Kurse des Dozenten anzeigen</a> |
+                        <a asp-page="./Edit" asp-route-id="@instructor.ID">Bearbeiten & Kurse zuordnen</a> |
+                        <a asp-page="./Details" asp-route-id="@instructor.ID">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@instructor.ID">Löschen</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.InstructorData.Courses != null)
+    {
+        @if (!Model.InstructorData.Courses.Any())
+        {
+            <p>Dem Dozenten sind bislang keine Kurse zugeordnet.</p>
+        }
+        else
+        {
+            <h3 class="mt-4">Kurse des ausgewählten Dozenten</h3>
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>Titel</th>
+                    <th>Semester</th>
+                </tr>
+
+                @foreach (var course in Model.InstructorData.Courses)
+                {
+                    string activeRow = "";
+                    if (course.ID == Model.CourseID)
+                    {
+                        activeRow = "table-info";
+                    }
+                    <tr class="@activeRow">
+                        <td>
+                            <a asp-page="./Index" asp-route-courseID="@course.ID">Studenten im Kurs anzeigen</a>
+                        </td>
+                        <td>
+                            @course.Title
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => course.Term)
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    }
+
+
+    @if (Model.InstructorData.Enrollments != null)
+    {
+        <h3 class="mt-4">
+            Eingeschriebene Studenten im Kurs
+        </h3>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Ort</th>
+            </tr>
+            @foreach (var student in Model.InstructorData.Enrollments)
+            {
+                <tr>
+                    <td>
+                        @student.Student.FullName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => student.Student.City)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+}
+
+

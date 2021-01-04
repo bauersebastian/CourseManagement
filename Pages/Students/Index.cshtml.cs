@@ -19,11 +19,29 @@ namespace CourseManagement.Pages.Students
             _context = context;
         }
 
+        /// <summary>
+        /// NameSort specifies the type of sorting for names.
+        /// </summary>
         public string NameSort { get; set; }
+
+        /// <summary>
+        /// DateSort specifies the type of sorting per Birthdate.
+        /// </summary>
         public string DateSort { get; set; }
+
+        /// <summary>
+        /// Stores the current set filter.
+        /// </summary>
         public string CurrentFilter { get; set; }
+
+        /// <summary>
+        /// Stores the current set sorting.
+        /// </summary>
         public string CurrentSort { get; set; }
 
+        /// <summary>
+        /// List of Students.
+        /// </summary>
         public IList<Student> Students { get;set; }
 
         public async Task OnGetAsync(string sortOrder, string searchString)

@@ -30,8 +30,9 @@ namespace CourseManagement
                 try
                 {
                     var context = services.GetRequiredService<UniversityContext>();
-                    // context.Database.EnsureCreated();
-                    DbInitializer.Initialize(context);
+
+                    // seed the database with dummy data for development and testing
+                    // DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

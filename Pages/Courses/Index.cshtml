@@ -1,0 +1,65 @@
+﻿@page
+@model CourseManagement.Pages.Courses.IndexModel
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Kurse";
+}
+
+<h1>Kurse</h1>
+
+<p>
+    <a asp-page="Create">Erstelle einen neuen Kurs</a>
+</p>
+
+@if(!Model.Courses.Any())
+{
+    <p>Es wurden bislang keine Kurse angelegt.</p>
+}else
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Courses[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Courses[0].Term)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Courses[0].StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Courses[0].EndDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Courses)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Term)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Bearbeiten</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Löschen</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+

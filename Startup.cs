@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CourseManagement.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace CourseManagement
 {
@@ -61,6 +63,17 @@ namespace CourseManagement
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // we use the German culture for this app
+            // in order to use comma as separators
+            var defaultCulture = new CultureInfo("de-DE");
+            var localizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(defaultCulture),
+                SupportedCultures = new List<CultureInfo> { defaultCulture },
+                SupportedUICultures = new List<CultureInfo> { defaultCulture }
+            };
+            app.UseRequestLocalization(localizationOptions);
 
             app.UseEndpoints(endpoints =>
             {

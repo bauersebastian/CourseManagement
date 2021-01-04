@@ -9,9 +9,8 @@
 
 <p class="text-danger">@Model.ErrorMessage</p>
 
-<h3>Bist du sicher, dass du diesen Studenten löschen möchtest?</h3>
+<h3>Bist du sicher, dass du den Studenten @Html.DisplayFor(model => model.Student.FullName) löschen möchtest?</h3>
 <div>
-    <h4>Student</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -54,7 +53,7 @@
     
     <form method="post">
         <input type="hidden" asp-for="Student.ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
+        <input type="submit" value="Löschen" class="btn btn-danger" /> |
+        <a asp-page="./Index">Zurück zur Übersicht</a>
     </form>
 </div>

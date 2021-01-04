@@ -1,0 +1,64 @@
+﻿@page
+@model CourseManagement.Pages.Instructors.DeleteModel
+
+@{
+    ViewData["Title"] = "Löschen von Dozenten";
+}
+
+<h1>Löschen von Dozenten</h1>
+
+<h3>Bist du sicher, dass du den Dozenten @Html.DisplayFor(model => model.Instructor.FirstName) @Html.DisplayFor(model => model.Instructor.LastName) löschen möchtest?</h3>
+<div>
+    <h4>Details zum Dozenten</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Instructor.Degree)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Instructor.Degree)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Instructor.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Instructor.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Instructor.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Instructor.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Instructor.Birthdate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Instructor.Birthdate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Instructor.Street)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Instructor.Street)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Instructor.ZipCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Instructor.ZipCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Instructor.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Instructor.City)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Instructor.ID" />
+        <input type="submit" value="Löschen" class="btn btn-danger" /> |
+        <a asp-page="./Index">Zurück zur Übersicht</a>
+    </form>
+</div>

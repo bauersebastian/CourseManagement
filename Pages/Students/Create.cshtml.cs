@@ -10,7 +10,7 @@ using CourseManagement.Models;
 
 namespace CourseManagement.Pages.Students
 {
-    public class CreateModel : PageModel
+    public class CreateModel : StudentCoursesPageModel
     {
         private readonly CourseManagement.Data.UniversityContext _context;
 
@@ -21,18 +21,33 @@ namespace CourseManagement.Pages.Students
 
         public IActionResult OnGet()
         {
+            var student = new Student();
+            student.Enrollments = new List<Enrollment>();
+            PopulateAssignedCourseData(_context, student);
             return Page();
         }
 
         [BindProperty]
         public Student Student { get; set; }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string[] selectedCourses)
         {
-            var emptyStudent = new Student();
+            var newStudent = new Student();
+            if (selectedCourses != null)
+            {
+                newStudent.Enrollments = new List<Enrollment>();
+                foreach (var course in selectedCourses)
+                {
+                    var courseToAdd = new Enrollment
+                    {
+                        CourseID = int.Parse(course)
+                    };
+                    newStudent.Enrollments.Add(courseToAdd);
+                }
+            }
 
             if (await TryUpdateModelAsync<Student>(
-                emptyStudent,
+                newStudent,
                 "student",   // Prefix for form value.
                 s => s.FirstName, 
                 s => s.LastName, 
@@ -41,11 +56,11 @@ namespace CourseManagement.Pages.Students
                 s => s.ZipCode,
                 s => s.City))
             {
-                _context.Students.Add(emptyStudent);
+                _context.Students.Add(newStudent);
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
-
+            PopulateAssignedCourseData(_context, newStudent);
             return Page();
         }
     }

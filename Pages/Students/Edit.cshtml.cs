@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CourseManagement.Data;
 using CourseManagement.Models;
 
 namespace CourseManagement.Pages.Students
 {
-    public class EditModel : PageModel
+    public class EditModel : StudentCoursesPageModel
     {
         private readonly CourseManagement.Data.UniversityContext _context;
 
@@ -30,48 +25,60 @@ namespace CourseManagement.Pages.Students
                 return NotFound();
             }
 
-            Student = await _context.Students.FindAsync(id);
+            // Load the student together with Enrollments and Courses
+            Student = await _context.Students
+                .Include(i => i.Enrollments)
+                    .ThenInclude(i => i.Course)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (Student == null)
             {
                 return NotFound();
             }
+            PopulateAssignedCourseData(_context, Student);
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        /// <summary>
+        /// OnPost Method takes care of updates to the Student.
+        /// </summary>
+        /// <param name="id">ID of the instructor</param>
+        /// <returns></returns>
+        public async Task<IActionResult> OnPostAsync(int? id, string[] selectedCourses)
         {
-            if (!ModelState.IsValid)
+            // if no ID is passed, we return a 404 page
+            if(id == null)
             {
-                return Page();
+                return NotFound();
             }
 
-            _context.Attach(Student).State = EntityState.Modified;
+            var studentToUpdate = await _context.Students
+                .Include(i => i.Enrollments)
+                    .ThenInclude(i => i.Course)
+                .FirstOrDefaultAsync(s => s.ID == id);
 
-            try
+            if(studentToUpdate == null)
             {
+                return NotFound();
+            }
+
+            if (await TryUpdateModelAsync<Student>(
+                studentToUpdate,
+                "Student",
+                i => i.FirstName, i => i.LastName,
+                i => i.Street,
+                i => i.City, i => i.Birthdate,
+                i => i.ZipCode))
+            {
+                UpdateStudentCourses(_context, selectedCourses, studentToUpdate);
                 await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentExists(Student.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
+            UpdateStudentCourses(_context, selectedCourses, studentToUpdate);
+            PopulateAssignedCourseData(_context, studentToUpdate);
+            return Page();
         }
 
-        private bool StudentExists(int id)
-        {
-            return _context.Students.Any(e => e.ID == id);
-        }
     }
 }

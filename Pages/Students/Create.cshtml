@@ -2,15 +2,15 @@
 @model CourseManagement.Pages.Students.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Student erstellen";
 }
 
-<h1>Create</h1>
+<h1>Erstellen eines</h1>
 
-<h4>Student</h4>
+<h4>Studenten</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -44,14 +44,42 @@
                 <span asp-validation-for="Student.City" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                <h4>Student Kursen zuordnen:</h4>
+                @if (!Model.AssignedCourseDataList.Any())
+                {
+                    <p>Es sind leider noch keine Kurse angelegt worden.</p>
+                } else
+                {
+                    <div class="table">
+                        <table>
+                                @{
+                                    foreach (var course in Model.AssignedCourseDataList)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox"
+                                                        name="selectedCourses"
+                                                        value="@course.CourseID"
+                                                        @(Html.Raw(course.Assigned ? "checked=\"checked\"" : "")) />
+                                                @course.Title @Html.DisplayFor(model => course.Term)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </table>
+                        </div>
+                }
+                
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Student speichern" class="btn btn-primary" />
+                </div>
+            </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="Index">Zurück zur Übersicht</a>
 </div>
 
 @section Scripts {

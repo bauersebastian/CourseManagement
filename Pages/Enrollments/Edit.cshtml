@@ -1,0 +1,44 @@
+﻿@page
+@model CourseManagement.Pages.Enrollments.EditModel
+
+@{
+    ViewData["Title"] = "Bearbeiten von Einschreibungen";
+}
+
+<h1>Bearbeitung von @Html.DisplayFor(model=> Model.Enrollment.Student.FullName) im Kurs @Html.DisplayFor(model => Model.Enrollment.Course.Title)</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Enrollment.EnrollmentID" />
+            <input type="hidden" asp-for="Enrollment.CourseID" />
+            <input type="hidden" asp-for="Enrollment.StudentID" />
+            
+            <div class="form-group">
+                <label asp-for="Enrollment.PointsAcademicAchievement" class="control-label"></label>
+                <input asp-for="Enrollment.PointsAcademicAchievement" class="form-control" />
+                <span asp-validation-for="Enrollment.PointsAcademicAchievement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Enrollment.PointsExam" class="control-label"></label>
+                <input asp-for="Enrollment.PointsExam" class="form-control" />
+                <span asp-validation-for="Enrollment.PointsExam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Enrollment.Grade" class="control-label"></label>
+                <input asp-for="Enrollment.Grade" class="form-control" />
+                <span asp-validation-for="Enrollment.Grade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Speichern" class="btn btn-primary" /> | 
+                <a asp-page="../Students/Details" asp-route-id="@Model.Enrollment.StudentID">Abbrechen und zurück zum Studenten</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

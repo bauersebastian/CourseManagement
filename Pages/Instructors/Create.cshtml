@@ -1,0 +1,91 @@
+﻿@page
+@model CourseManagement.Pages.Instructors.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Dozenten anlegen</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Instructor.Degree" class="control-label"></label>
+                <input asp-for="Instructor.Degree" class="form-control" />
+                <span asp-validation-for="Instructor.Degree" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Instructor.FirstName" class="control-label"></label>
+                <input asp-for="Instructor.FirstName" class="form-control" />
+                <span asp-validation-for="Instructor.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Instructor.LastName" class="control-label"></label>
+                <input asp-for="Instructor.LastName" class="form-control" />
+                <span asp-validation-for="Instructor.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Instructor.Birthdate" class="control-label"></label>
+                <input asp-for="Instructor.Birthdate" class="form-control" />
+                <span asp-validation-for="Instructor.Birthdate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Instructor.Street" class="control-label"></label>
+                <input asp-for="Instructor.Street" class="form-control" />
+                <span asp-validation-for="Instructor.Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Instructor.ZipCode" class="control-label"></label>
+                <input asp-for="Instructor.ZipCode" class="form-control" />
+                <span asp-validation-for="Instructor.ZipCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Instructor.City" class="control-label"></label>
+                <input asp-for="Instructor.City" class="form-control" />
+                <span asp-validation-for="Instructor.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h4>Kurse dem Dozenten zuordnen:</h4>
+                @if (!Model.AssignedCourseDataList.Any())
+                {
+                    <p>Es sind bislang leider keine Kurse angelegt worden.</p>
+                } else
+                {
+                    <div class="table">
+                        <table>
+                            @{
+                                foreach (var course in Model.AssignedCourseDataList)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox"
+                                                   name="selectedCourses"
+                                                   value="@course.CourseID"
+                                                   @(Html.Raw(course.Assigned ? "checked=\"checked\"" : "")) />
+                                            @course.Title - @Html.DisplayFor(model => course.Term)
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                    </div>
+                }
+                
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Dozent anlegen" class="btn btn-primary" />
+                </div>
+            </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Zurück zur Übersicht</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

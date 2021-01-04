@@ -1,11 +1,12 @@
 ﻿@page "{id:int?}"
 @model CourseManagement.Pages.Students.DetailsModel
+@using System.Linq
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Details zu @Html.DisplayFor(model => model.Student.FirstName) @Html.DisplayFor(model => model.Student.LastName)</h1>
 
 <div>
     <h4>Student</h4>
@@ -47,27 +48,55 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Student.City)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Student.Enrollments)
-        </dt>
-        <dd class="col-sm-10">
-            <table class="table">
-                <tr>
-                    <th>Modul Titel</th>
-                </tr>
-                @foreach (var item in Model.Student.Enrollments)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course.Title)
-                        </td>
-                    </tr>
-                }
-            </table>
-        </dd>
     </dl>
+        @if (Model.Student.Enrollments.Any())
+        {
+            <h3>
+                Der Student ist in folgenden Kursen eingeschrieben:
+            </h3>
+            <div class="col-sm-12">
+                <table class="table">
+                    <tr>
+                        <th>Modulbezeichnung</th>
+                        <th>Semester</th>
+                        <th>Note</th>
+                        <th>Punkte Klausur</th>
+                        <th>Punkte Studienleistung</th>
+                        <th></th>
+                    </tr>
+                    @foreach (var enrollment in Model.Student.Enrollments)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => enrollment.Course.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => enrollment.Course.Term)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => enrollment.Grade)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => enrollment.PointsExam)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => enrollment.PointsAcademicAchievement)
+                            </td>
+                            <td>
+                                <a asp-page="../Enrollments/Edit" asp-route-id="@enrollment.EnrollmentID" class="btn btn-sm btn-primary" role="button" aria-disabled="true">Noten bearbeiten</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        } else
+        {
+            <p>
+                Der Student ist noch in keinem Kurs eingeschrieben.
+            </p>
+        }
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Student.ID">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Student.ID">Student bearbeiten</a> |
+    <a asp-page="./Index">Zurück zur Übersicht</a>
 </div>

@@ -1,0 +1,38 @@
+﻿@page
+@model CourseManagement.Pages.AboutModel
+@{
+    ViewData["Title"] = "Über uns";
+}
+
+<div class="container mt-4 mb-4">
+    <div class="row">
+        <div class="col">
+            <p>
+                Diese Web Applikation ist im Rahmen einer Studienleistung im Modul Objektorientierte Softwareentwicklung mit C# erstellt worden.  
+            </p>
+            <p>Diese App wurde in einer Public Cloud veröffentlicht unter: <a href="https://coursemanagement20201231154319.azurewebsites.net/">Microsoft Azure</a></p>
+            <h2>Realisierte Basisfunktionen:</h2>
+            <ul>
+                <li>Klassen und Datenbanktabellen für Studenten, Dozenten, Kurse</li>
+                <li>Klassen und Datenbanktabellen für die Zuordnung von Studenten und Dozenten zu Kursen</li>
+                <li>Speicherung der Daten in einer Microsoft SQL Datenbank</li>
+                <li>Nutzung einer abstrakten Klasse "Person" zwecks Vererbung</li>
+                <li>Realisierung als ASP.NET Core Web Applikation unter Nutzung von Razor Pages</li>
+                <li>Views für die Darstellung der Daten und Zuordnungen</li>
+                <li>Seiten für das Anlegen, Bearbeiten und Löschen von Daten</li>
+                <li>Nutzung von Annotationen zur Dokumenation des Codes</li>
+            </ul>
+            <h2>Realisierte Zusatzfunktionen:</h2>
+            <ul>
+                <li>Möglichkeit Studenten und Dozenten in der Listdarstellung unterschiedlich zu sortieren</li>
+                <li>Möglichkeit Studenten und Dozenten nach Namen zu filtern</li>
+                <li>Speicherung einer Note, Punkten in der Klausur und Studienleistung pro Student und Kurs</li>
+                <li>Lokalisierung der App für die deutsche Sprache (z.B. Eingabe von kommagetrennten Werten statt Punkt ist dadurch möglich)</li>
+                <li>Publikation der App zu Demozwecken unter Microsoft Azure</li>
+            </ul>
+        </div>
+    </div>
+    
+</div>
+
+
