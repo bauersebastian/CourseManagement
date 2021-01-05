@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using CourseManagement.Data;
 using CourseManagement.Models;
 
 namespace CourseManagement.Pages.Students
@@ -45,10 +41,10 @@ namespace CourseManagement.Pages.Students
                     newStudent.Enrollments.Add(courseToAdd);
                 }
             }
-
+            // if creation of students is necessary, save the changes to the db
             if (await TryUpdateModelAsync<Student>(
                 newStudent,
-                "student",   // Prefix for form value.
+                "Student", 
                 s => s.FirstName, 
                 s => s.LastName, 
                 s => s.Birthdate,
@@ -60,6 +56,8 @@ namespace CourseManagement.Pages.Students
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
+            // if TryUpdateModelAsync fails load the assigned data and display the 
+            // create page again - e.g. in case of failure
             PopulateAssignedCourseData(_context, newStudent);
             return Page();
         }

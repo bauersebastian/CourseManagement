@@ -23,7 +23,10 @@ namespace CourseManagement.Pages.Courses
 
         public async Task OnGetAsync()
         {
-            Courses = await _context.Courses.ToListAsync();
+            Courses = await _context.Courses
+                .Include(c => c.Enrollments)
+                .Include(c => c.InstructorCourseAssignments)
+                .ToListAsync();    
         }
     }
 }

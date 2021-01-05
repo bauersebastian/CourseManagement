@@ -27,9 +27,13 @@ namespace CourseManagement.Pages.Courses
         [BindProperty]
         public Course Course { get; set; }
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+        /// <summary>
+        /// Actions upon posting a course via the web form.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync()
         {
+            // if the ModelState is valid, save the course.
             if (!ModelState.IsValid)
             {
                 return Page();

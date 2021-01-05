@@ -36,6 +36,7 @@ namespace CourseManagement.Pages.Students
             {
                 return NotFound();
             }
+            // get the assigned courses and return the edit page
             PopulateAssignedCourseData(_context, Student);
             return Page();
         }
@@ -53,6 +54,7 @@ namespace CourseManagement.Pages.Students
                 return NotFound();
             }
 
+            // load the student from the db
             var studentToUpdate = await _context.Students
                 .Include(i => i.Enrollments)
                     .ThenInclude(i => i.Course)
@@ -63,6 +65,7 @@ namespace CourseManagement.Pages.Students
                 return NotFound();
             }
 
+            // if updates are necessary, save the changes to the db
             if (await TryUpdateModelAsync<Student>(
                 studentToUpdate,
                 "Student",
@@ -75,6 +78,8 @@ namespace CourseManagement.Pages.Students
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
+            // if TryUpdateModelAsync fails load the assigned data and display the 
+            // edit page again - e.g. in case of failure
             UpdateStudentCourses(_context, selectedCourses, studentToUpdate);
             PopulateAssignedCourseData(_context, studentToUpdate);
             return Page();

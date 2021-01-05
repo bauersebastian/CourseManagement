@@ -47,7 +47,7 @@ namespace CourseManagement.Pages.Instructors
             {
                 return NotFound();
             }
-
+            // load the instructor with related data from the db
             var instructorToUpdate = await _context.Instructors
                 .Include(i => i.InstructorCourseAssignments)
                     .ThenInclude(i => i.Course)
@@ -57,7 +57,7 @@ namespace CourseManagement.Pages.Instructors
             {
                 return NotFound();
             }
-
+            // if updates are necessary update the record in the db
             if (await TryUpdateModelAsync<Instructor>(
                 instructorToUpdate,
                 "Instructor",
@@ -70,6 +70,7 @@ namespace CourseManagement.Pages.Instructors
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
+            // if TryUpdateModelAsync fails load the edit page again
             UpdateInstructorCourses(_context, selectedCourses, instructorToUpdate);
             PopulateAssignedCourseData(_context, instructorToUpdate);
             return Page();
